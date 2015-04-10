@@ -25,7 +25,7 @@ var paths = {
 };
 
 gulp.task('fonts', function () {
-  gulp.src('resources/assets/bower/bootstrap-sass-official/assets/fonts/**/*')
+  return gulp.src('resources/assets/bower/bootstrap-sass-official/assets/fonts/**/*')
     .pipe(gulp.dest('public/build/fonts/'));
 });
 
@@ -49,7 +49,7 @@ gulp.task('sass', function (cb) {
 });
 
 gulp.task('scripts-dev', function () {
-    gulp.src(paths.scripts)
+    return gulp.src(paths.scripts)
     .pipe(sourcemaps.init())
     .pipe(concat('main.js'))
     .pipe(sourcemaps.write())
@@ -99,7 +99,10 @@ gulp.task('clean', function () {
       .pipe(clean({force: true}));
 });
 
-gulp.task('develop', ['watch', 'sass-dev', 'scripts-dev', 'fonts']);
+gulp.task('develop', ['sass-dev', 'scripts-dev', 'fonts'], function () {
+    return gulp.start("rev-dev")
+            .start("watch");
+});
 
 gulp.task('production', ['fonts', 'rev']);
 
